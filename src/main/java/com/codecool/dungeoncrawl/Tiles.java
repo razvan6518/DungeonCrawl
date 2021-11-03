@@ -12,6 +12,7 @@ public class Tiles {
 
     private static Image tileset = new Image("/tiles.png", 543 * 2, 543 * 2, true, false);
     private static Map<String, Tile> tileMap = new HashMap<>();
+
     public static class Tile {
         public final int x, y, w, h;
         Tile(int i, int j) {
