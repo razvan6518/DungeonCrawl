@@ -1,11 +1,14 @@
 package com.codecool.dungeoncrawl.logic;
 
+import com.codecool.dungeoncrawl.logic.actors.Monster;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.actors.Scorpion;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.items.Key;
 import com.codecool.dungeoncrawl.logic.items.Sword;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MapLoader {
@@ -15,7 +18,7 @@ public class MapLoader {
         int width = scanner.nextInt();
         int height = scanner.nextInt();
 
-        scanner.nextLine(); // empty line
+        scanner.nextLine();
 
         GameMap map = new GameMap(width, height, CellType.EMPTY);
         for (int y = 0; y < height; y++) {
@@ -39,6 +42,16 @@ public class MapLoader {
                         case 's':
                             cell.setType(CellType.FLOOR);
                             map.setActor(new Skeleton(cell));
+                            break;
+                        case 'c':
+                            cell.setType(CellType.FLOOR);
+                            Scorpion scorpion = new Scorpion(cell);
+                            map.setActor(scorpion);
+                            break;
+                        case 'M':
+                            cell.setType(CellType.FLOOR);
+                            Monster monster = new Monster(cell);
+                            map.setActor(monster);
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);

@@ -1,13 +1,19 @@
 package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Monster;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.actors.Scorpion;
 import com.codecool.dungeoncrawl.logic.items.Item;
+
+import java.util.ArrayList;
 
 public class GameMap {
     private int width;
     private int height;
     private Cell[][] cells;
+    ArrayList<Actor> scorpions = new ArrayList<>();
+    ArrayList<Actor> monsters = new ArrayList<>();
 
     private Player player;
     private Actor actor;
@@ -45,11 +51,23 @@ public class GameMap {
     }
 
     public void setActor(Actor actor) {
+        if (actor instanceof Scorpion)
+            scorpions.add(actor);
+        if (actor instanceof Monster)
+            monsters.add(actor);
         this.actor = actor;
     }
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public ArrayList<Actor> getScorpions() {
+        return scorpions;
+    }
+
+    public ArrayList<Actor> getMonsters() {
+        return monsters;
     }
 
     public Actor getActor() {

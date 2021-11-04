@@ -3,6 +3,8 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Scorpion;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -22,6 +24,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 
 public class Main extends Application {
     GameMap map = MapLoader.loadMap();
@@ -33,6 +37,7 @@ public class Main extends Application {
     Label itemsDisplay = new Label();
     Button button = new Button("Take item");
     GridPane ui = new GridPane();
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -96,6 +101,7 @@ public class Main extends Application {
     }
 
     private void refresh() {
+        ArrayList<int[]> directions = new ArrayList<>(Arrays.asList(new int[] {0, -1}, new int[] {0, 1}, new int[] {-1, 0}, new int[] {1, 0}));
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         for (int x = 0; x < map.getWidth(); x++) {
@@ -118,6 +124,18 @@ public class Main extends Application {
                 itemsText += "\n" + item.getTileName();
             }
             itemsDisplay.setText(itemsText);
+        }
+        for (Actor scorpion: map.getScorpions()){
+            int[] randomDirection = directions.get(new Random().nextInt(4));
+            scorpion.move(randomDirection[0], randomDirection[1]);
+        }
+        for (Actor monster: map.getMonsters()){
+            int playerX = map.getPlayer().getCell().getX();
+            int playerY = map.getPlayer().getCell().getY();
+            int monsterX = monster.getX();
+            int monsterY = monster.getY();
+            int[] direction = new int[] {Integer.compare(playerX - monsterX, 0), Integer.compare(playerY - monsterY, 0)};
+            monster.move(direction[0], direction[1]);
         }
     }
 }

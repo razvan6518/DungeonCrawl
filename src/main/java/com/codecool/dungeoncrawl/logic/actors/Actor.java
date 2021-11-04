@@ -31,9 +31,9 @@ public abstract class Actor implements Drawable {
             }
             return;
         }
-        if (nextCell.getActor() instanceof Skeleton){
+        if (nextCell.getActor() != null){
             nextCell.getActor().getHit(this);
-            if (nextCell.getActor() instanceof Skeleton){
+            if (nextCell.getActor() instanceof Skeleton || nextCell.getActor() instanceof Scorpion){
                 this.getHit(nextCell.getActor());
             }
         } else {
