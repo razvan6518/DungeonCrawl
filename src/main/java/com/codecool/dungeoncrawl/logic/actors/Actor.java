@@ -3,14 +3,19 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.items.Item;
+
+import java.util.ArrayList;
 
 public abstract class Actor implements Drawable {
     private Cell cell;
     private int health = 10;
+    private ArrayList<Item> items;
 
     public Actor(Cell cell) {
         this.cell = cell;
         this.cell.setActor(this);
+        this.items = new ArrayList<>();
     }
 
     public void move(int dx, int dy) {
@@ -36,5 +41,17 @@ public abstract class Actor implements Drawable {
 
     public int getY() {
         return cell.getY();
+    }
+
+    public void setHealth() {
+        this.health += 10;
+    }
+
+    public void addItem(Item item){
+        this.items.add(item);
+    }
+
+    public ArrayList<Item> getItems() {
+        return items;
     }
 }

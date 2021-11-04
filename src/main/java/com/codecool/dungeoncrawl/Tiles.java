@@ -29,11 +29,21 @@ public class Tiles {
         tileMap.put("floor", new Tile(2, 0));
         tileMap.put("player", new Tile(27, 0));
         tileMap.put("skeleton", new Tile(29, 6));
+        tileMap.put("sword", new Tile(0, 30));
+        tileMap.put("key", new Tile(16, 23));
     }
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {
         Tile tile = tileMap.get(d.getTileName());
         context.drawImage(tileset, tile.x, tile.y, tile.w, tile.h,
                 x * TILE_WIDTH, y * TILE_WIDTH, TILE_WIDTH, TILE_WIDTH);
+    }
+
+    public Image getTileset(){
+        return tileset;
+    }
+
+    public static Map<String, Tile> getTileMap() {
+        return tileMap;
     }
 }
