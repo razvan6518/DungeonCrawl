@@ -9,10 +9,12 @@ import java.util.ArrayList;
 
 public abstract class Actor implements Drawable {
     private Cell cell;
-    private int health = 10;
-    private ArrayList<Item> items;
+    protected int damage;
+    protected int health = 10;
+    protected ArrayList<Item> items;
 
     public Actor(Cell cell) {
+        this.damage = 3;
         this.cell = cell;
         this.cell.setActor(this);
         this.items = new ArrayList<>();
@@ -20,7 +22,14 @@ public abstract class Actor implements Drawable {
 
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
-        if (!nextCell.getTileName().equals("wall") && !(nextCell.getActor() instanceof Skeleton)){
+        if (nextCell.getTileName().equals("wall"))
+            return;
+        if (nextCell.getActor() instanceof Skeleton){
+            nextCell.getActor().getHit(this);
+            if (nextCell.getActor() instanceof Skeleton){
+                this.getHit(nextCell.getActor());
+            }
+        } else {
             cell.setActor(null);
             nextCell.setActor(this);
             cell = nextCell;
@@ -43,15 +52,25 @@ public abstract class Actor implements Drawable {
         return cell.getY();
     }
 
-    public void setHealth() {
-        this.health += 10;
+    public void getHit(Actor actor) {
+        this.health -= actor.getDamage();
+        if (this.health < 1){
+            this.cell.removeActor();
+        }
     }
 
     public void addItem(Item item){
         this.items.add(item);
+        if (item.getTileName().equals("sword")){
+            this.damage += 5;
+        }
     }
 
     public ArrayList<Item> getItems() {
         return items;
+    }
+
+    public int getDamage() {
+        return damage;
     }
 }
