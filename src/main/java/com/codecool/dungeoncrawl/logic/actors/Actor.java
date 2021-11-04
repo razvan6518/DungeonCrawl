@@ -24,6 +24,13 @@ public abstract class Actor implements Drawable {
         Cell nextCell = cell.getNeighbor(dx, dy);
         if (nextCell.getTileName().equals("wall"))
             return;
+        if (nextCell.getTileName().equals("doorClosed")){
+            for (Item item: items){
+                if (item.getTileName().equals("key"))
+                    nextCell.setType(CellType.DOOR_OPENED);
+            }
+            return;
+        }
         if (nextCell.getActor() instanceof Skeleton){
             nextCell.getActor().getHit(this);
             if (nextCell.getActor() instanceof Skeleton){
