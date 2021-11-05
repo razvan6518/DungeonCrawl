@@ -53,6 +53,15 @@ public class MapLoader {
                             Monster monster = new Monster(cell);
                             map.setActor(monster);
                             break;
+                        case 'F':
+                            cell.setType(CellType.FENCE_UP);
+                            break;
+                        case 'B':
+                            cell.setType(CellType.CRATE);
+                            break;
+                        case 'T':
+                            cell.setType(CellType.TRAP);
+                            break;
                         case '@':
                             cell.setType(CellType.FLOOR);
                             map.setPlayer(new Player(cell));

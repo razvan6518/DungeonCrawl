@@ -31,10 +31,21 @@ public abstract class Actor implements Drawable {
             }
             return;
         }
+        if (nextCell.getTileName().equals("crate")){
+            if (nextCell.getNeighbor(dx, dy).getTileName().equals("trap")){
+
+            }
+            nextCell.getNeighbor(dx, dy).setType(CellType.CRATE);
+            nextCell.setType(CellType.FLOOR);
+            cell.setActor(null);
+            nextCell.setActor(this);
+            cell = nextCell;
+            return;
+        }
         if (nextCell.getActor() != null){
-            nextCell.getActor().getHit(this);
-            if (nextCell.getActor() instanceof Skeleton || nextCell.getActor() instanceof Scorpion){
-                this.getHit(nextCell.getActor());
+            nextCell.getActor().hit(this);
+            if (nextCell.getActor() instanceof Skeleton || nextCell.getActor() instanceof Scorpion || nextCell.getActor() instanceof Monster){
+                this.hit(nextCell.getActor());
             }
         } else {
             cell.setActor(null);
@@ -59,7 +70,7 @@ public abstract class Actor implements Drawable {
         return cell.getY();
     }
 
-    public void getHit(Actor actor) {
+    public void hit(Actor actor) {
         this.health -= actor.getDamage();
         if (this.health < 1){
             this.cell.removeActor();
