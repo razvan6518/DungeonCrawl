@@ -12,15 +12,18 @@ public abstract class Actor implements Drawable {
     protected int damage;
     protected int health = 10;
     protected ArrayList<Item> items;
+    protected boolean alive;
 
     public Actor(Cell cell) {
         this.damage = 3;
         this.cell = cell;
         this.cell.setActor(this);
         this.items = new ArrayList<>();
+        this.alive = true;
     }
 
     public void move(int dx, int dy) {
+        if (!alive) return;
         Cell nextCell = cell.getNeighbor(dx, dy);
         if (nextCell.getTileName().equals("wall"))
             return;
@@ -71,9 +74,11 @@ public abstract class Actor implements Drawable {
     }
 
     public void hit(Actor actor) {
+        if (!alive) return;
         this.health -= actor.getDamage();
         if (this.health < 1){
             this.cell.removeActor();
+            this.alive = false;
         }
     }
 

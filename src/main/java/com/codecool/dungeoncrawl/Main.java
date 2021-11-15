@@ -4,8 +4,8 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
-import com.codecool.dungeoncrawl.logic.actors.Scorpion;
 import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.logic.mapa.MapFactory;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,8 +15,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -30,8 +28,8 @@ import java.util.Random;
 public class Main extends Application {
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
-            map.getWidth() * Tiles.TILE_WIDTH,
-            map.getHeight() * Tiles.TILE_WIDTH);
+            50 * Tiles.TILE_WIDTH,
+            32 * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label itemsDisplay = new Label();
@@ -44,7 +42,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        ui.setPrefWidth(200);
+        ui.setPrefWidth(500);
         ui.setPadding(new Insets(10));
 
         ui.add(new Label("Health: "), 0, 0);
@@ -103,17 +101,24 @@ public class Main extends Application {
     private void refresh() {
         ArrayList<int[]> directions = new ArrayList<>(Arrays.asList(new int[] {0, -1}, new int[] {0, 1}, new int[] {-1, 0}, new int[] {1, 0}));
         context.setFill(Color.BLACK);
-        context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
-                Cell cell = map.getCell(x, y);
-                if (cell.getActor() != null && cell.getActor().getHealth() > 0) {
-                    Tiles.drawTile(context, cell.getActor(), x, y);
-                }else if (cell.getItem() != null) {
-                    Tiles.drawTile(context, cell.getItem(), x, y);
-                }else {
-                    Tiles.drawTile(context, cell, x, y);
+        context.fillRect(0, 0, 10, 10);
+        int playerX2 = map.getPlayer().getX();
+        int playerY2 = map.getPlayer().getY();
+        for (int x = 0; x < 60; x++) {
+            for (int y = 0; y < 62; y++) {
+                try {
+                    Cell cell = map.getCell(playerX2 - 30 + x, playerY2 - 20 + y);
+                    if (cell.getActor() != null && cell.getActor().getHealth() > 0) {
+                        Tiles.drawTile(context, cell.getActor(), x, y);
+                    }else if (cell.getItem() != null) {
+                        Tiles.drawTile(context, cell.getItem(), x, y);
+                    }else {
+                        Tiles.drawTile(context, cell, x, y);
+                    }
+                } catch (IndexOutOfBoundsException e){
+
                 }
+
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
