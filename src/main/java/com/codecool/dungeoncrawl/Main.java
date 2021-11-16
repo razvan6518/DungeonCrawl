@@ -5,7 +5,7 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.items.Item;
-import com.codecool.dungeoncrawl.logic.mapa.MapFactory;
+import com.codecool.dungeoncrawl.logic.map.MapFactory;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -29,7 +29,7 @@ public class Main extends Application {
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
             50 * Tiles.TILE_WIDTH,
-            32 * Tiles.TILE_WIDTH);
+            40 * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label itemsDisplay = new Label();
@@ -37,6 +37,7 @@ public class Main extends Application {
     GridPane ui = new GridPane();
 
     public static void main(String[] args) {
+//        MapFactory.createMap(7);
         launch(args);
     }
 
@@ -105,7 +106,7 @@ public class Main extends Application {
         int playerX2 = map.getPlayer().getX();
         int playerY2 = map.getPlayer().getY();
         for (int x = 0; x < 60; x++) {
-            for (int y = 0; y < 62; y++) {
+            for (int y = 0; y < 40; y++) {
                 try {
                     Cell cell = map.getCell(playerX2 - 30 + x, playerY2 - 20 + y);
                     if (cell.getActor() != null && cell.getActor().getHealth() > 0) {

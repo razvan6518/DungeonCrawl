@@ -1,4 +1,4 @@
-package com.codecool.dungeoncrawl.logic.mapa;
+package com.codecool.dungeoncrawl.logic.map;
 
 public class Room {
     private int x,y,width,height;
