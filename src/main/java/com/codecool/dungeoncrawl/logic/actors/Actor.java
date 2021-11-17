@@ -3,10 +3,13 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.items.Health;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.Key;
+import com.codecool.dungeoncrawl.logic.items.Sword;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public abstract class Actor implements Drawable {
     private Cell cell;
@@ -36,17 +39,18 @@ public abstract class Actor implements Drawable {
             }
             return;
         }
-        if (nextCell.getTileName().equals("crate")){
-            if (nextCell.getNeighbor(dx, dy).getTileName().equals("trap")){
+//        if (nextCell.getTileName().equals("crate")){
+//            if (nextCell.getNeighbor(dx, dy).getTileName().equals("trap")){
+//
+//            }
+//            nextCell.getNeighbor(dx, dy).setType(CellType.CRATE);
+//            nextCell.setType(CellType.FLOOR);
+//            cell.setActor(null);
+//            nextCell.setActor(this);
+//            cell = nextCell;
+//            return;
+//        }
 
-            }
-            nextCell.getNeighbor(dx, dy).setType(CellType.CRATE);
-            nextCell.setType(CellType.FLOOR);
-            cell.setActor(null);
-            nextCell.setActor(this);
-            cell = nextCell;
-            return;
-        }
         if (nextCell.getActor() != null){
             nextCell.getActor().hit(this);
             if (nextCell.getActor() instanceof Skeleton || nextCell.getActor() instanceof Scorpion || nextCell.getActor() instanceof Monster){
@@ -81,14 +85,32 @@ public abstract class Actor implements Drawable {
         if (this.health < 1){
             this.cell.removeActor();
             this.alive = false;
-            this.cell.setItem(new Key(this.cell));
+            this.cell.setItem(generateItem(cell));
         }
     }
+
+    private Item generateItem(Cell cell){
+        int choice = new Random().nextInt(3);
+        if (choice == 0){
+            return new Health(cell);
+        }
+        if (choice == 1){
+            return new Health(cell);
+        }
+        if (choice == 2){
+            return new Health(cell);
+        }
+        return null;
+    }
+
 
     public void addItem(Item item){
         this.items.add(item);
         if (item.getTileName().equals("sword")){
             this.damage += 5;
+        }
+        if (item.getTileName().equals("health")){
+            this.health += 15;
         }
     }
 

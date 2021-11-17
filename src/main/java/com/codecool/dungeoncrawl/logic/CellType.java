@@ -9,7 +9,8 @@ public enum CellType {
     MONSTER("monster"),
     FENCE_UP("fenceUp"),
     CRATE("crate"),
-    TRAP("trap");
+    TRAP("trap"),
+    HEALTH("health");
 
     private final String tileName;
 
