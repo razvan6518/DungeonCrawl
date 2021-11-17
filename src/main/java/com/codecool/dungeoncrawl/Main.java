@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Main extends Application {
-    GameMap map = MapLoader.loadMap();
+    static GameMap map;
     Canvas canvas = new Canvas(
             50 * Tiles.TILE_WIDTH,
             40 * Tiles.TILE_WIDTH);
@@ -37,7 +37,8 @@ public class Main extends Application {
     GridPane ui = new GridPane();
 
     public static void main(String[] args) {
-//        MapFactory.createMap(7);
+        MapFactory.createMap(13);
+        map = MapLoader.loadMap();
         launch(args);
     }
 
@@ -116,9 +117,7 @@ public class Main extends Application {
                     }else {
                         Tiles.drawTile(context, cell, x, y);
                     }
-                } catch (IndexOutOfBoundsException e){
-
-                }
+                } catch (IndexOutOfBoundsException ignored){}
 
             }
         }

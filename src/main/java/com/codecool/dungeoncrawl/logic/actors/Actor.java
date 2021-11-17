@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
 import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.logic.items.Key;
 
 import java.util.ArrayList;
 
@@ -31,6 +32,7 @@ public abstract class Actor implements Drawable {
             for (Item item: items){
                 if (item.getTileName().equals("key"))
                     nextCell.setType(CellType.DOOR_OPENED);
+                items.remove(item);
             }
             return;
         }
@@ -79,6 +81,7 @@ public abstract class Actor implements Drawable {
         if (this.health < 1){
             this.cell.removeActor();
             this.alive = false;
+            this.cell.setItem(new Key(this.cell));
         }
     }
 
