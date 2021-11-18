@@ -33,7 +33,7 @@ public abstract class Actor implements Drawable {
         Cell nextCell = cell.getNeighbor(dx, dy);
         if (nextCell.getTileName().equals("wall"))
             return;
-        if (nextCell.getTileName().equals("level"))
+        if (nextCell.getTileName().equals("level") && this.getTileName().equals("player"))
             Main.map = MapLoader.loadMap(2);
         if (nextCell.getTileName().equals("doorClosed")){
             for (Item item: items){

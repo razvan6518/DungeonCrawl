@@ -1,9 +1,12 @@
 package com.codecool.dungeoncrawl.logic.map;
 
+import com.codecool.dungeoncrawl.logic.manager.DbManager;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,7 +16,7 @@ public class MapFactory {
     public MapFactory() {
     }
 
-    public static void createMap(int numberOfRooms) {
+    public static void createMap(int numberOfRooms) throws SQLException {
 
         char[][] map = createEmptyMap();
         List<Room> rooms = placeRooms(numberOfRooms, map);
@@ -30,25 +33,8 @@ public class MapFactory {
         Room randomRoom = rooms.get(new Random().nextInt(rooms.size()));
         map[randomRoom.getY() + randomRoom.getHeight()/2][randomRoom.getX() + randomRoom.getWidth()/2] ='@';
         addWalls(map);
-        writeToFile(map, 1);
-
-        map = createEmptyMap();
-        rooms = null;
-        rooms = placeRooms(numberOfRooms, map);
-        createFileMap("map2");
-        for (Room room: rooms){
-            makePath(map, room, rooms.get(new Random().nextInt(rooms.size())));
-            putActorInRoom(room, map, 'c');
-            putActorInRoom(room, map, 'c');
-            putActorInRoom(room, map, 'M');
-            putActorInRoom(room, map, 'M');
-        }
-        //put stairs in a random room
-        putActorInRoom(rooms.get(new Random().nextInt(rooms.size())), map, 'L');
-        randomRoom = rooms.get(new Random().nextInt(rooms.size()));
-        map[randomRoom.getY() + randomRoom.getHeight()/2][randomRoom.getX() + randomRoom.getWidth()/2] ='@';
-        addWalls(map);
-        writeToFile(map, 2);
+//        writeToFile(map, 1);
+//        writeInDb(map);
     }
 
     public static void putActorInRoom(Room room, char[][] map, char actor){
@@ -163,6 +149,30 @@ public class MapFactory {
                 writeToFileMap("map" + mapNumber, String.valueOf('\n'));
             } catch (IOException ignored) {}
         }
+    }
+
+    private static void writeInDb(char[][] map) throws SQLException {
+        char[][] extendedMap = new char[map.length + 40][map[0].length + 40];
+        for (int i = 0; i < extendedMap.length; i++){
+            for (int j = 0; j < extendedMap[0].length; j++){
+                if (i < 15 || i >= map.length + 15 || j < 15 || j >= map[0].length + 15 ){
+                    extendedMap[i][j] = ' ';
+                } else {
+                    extendedMap[i][j] = map[i - 15][j - 15];
+                }
+            }
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < extendedMap.length; i++){
+            for (int j = 0; j < extendedMap[0].length; j++){
+                stringBuilder.append(extendedMap[i][j]);
+            }
+            stringBuilder.append('\n');
+        }
+        String mapForDb = stringBuilder.toString();
+        DbManager dbManager = new DbManager();
+        dbManager.setup();
+        dbManager.saves.addSave("salvare", mapForDb);
     }
 
     private static List<Room> placeRooms(int numberOfRooms, char[][] map){

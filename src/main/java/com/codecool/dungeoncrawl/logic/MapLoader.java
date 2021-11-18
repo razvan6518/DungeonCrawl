@@ -8,19 +8,28 @@ import com.codecool.dungeoncrawl.logic.items.Health;
 import com.codecool.dungeoncrawl.logic.items.Key;
 import com.codecool.dungeoncrawl.logic.items.Level;
 import com.codecool.dungeoncrawl.logic.items.Sword;
+import com.codecool.dungeoncrawl.logic.manager.DbManager;
 
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MapLoader {
     public static GameMap loadMap(int number) {
-        InputStream is = MapLoader.class.getResourceAsStream("/map" + number + ".txt");
-        Scanner scanner = new Scanner(is);
-        int width = scanner.nextInt();
-        int height = scanner.nextInt();
+//        InputStream is = MapLoader.class.getResourceAsStream("/map" + number + ".txt");
+//        Scanner scanner = new Scanner(is);
+//        int width = scanner.nextInt();
+//        int height = scanner.nextInt();
+//
+//        scanner.nextLine();
 
-        scanner.nextLine();
+        int width = 200;
+        int height = 200;
+
+        String mapFromDb = getMapFromDb();
+
+
 
         GameMap map = new GameMap(width, height, CellType.EMPTY);
         for (int y = 0; y < height; y++) {
@@ -91,6 +100,16 @@ public class MapLoader {
             }
         }
         return map;
+    }
+
+    private static String getMapFromDb() {
+        DbManager dbManager = new DbManager();
+        try {
+            dbManager.setup();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dbManager.saves.getSave("salvare");
     }
 
 }
