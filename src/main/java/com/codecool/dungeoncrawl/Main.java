@@ -7,6 +7,7 @@ import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.manager.DbManager;
 import com.codecool.dungeoncrawl.logic.map.MapFactory;
+import com.codecool.dungeoncrawl.logic.util.Util;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,10 +23,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Random;
 
 public class Main extends Application {
@@ -41,8 +42,8 @@ public class Main extends Application {
     static DbManager dbManager;
 
     public static void main(String[] args) throws SQLException {
-        MapFactory.createMap(13);
-        map = MapLoader.loadMap(1);
+//        MapFactory.createMap(13);
+        map = MapLoader.loadMap();
         dbManager = new DbManager();
         dbManager.setup();
         launch(args);
@@ -104,7 +105,9 @@ public class Main extends Application {
                 break;
             case S:
                 if (keyEvent.isControlDown()){
-                    dbManager.saves.addSave("name", "map");
+                    java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+                    Util.saveMap(map);
+//                    dbManager.saves.addSave(date, "map");
                 }
                 break;
         }

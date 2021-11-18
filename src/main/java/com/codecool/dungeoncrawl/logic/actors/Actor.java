@@ -9,7 +9,9 @@ import com.codecool.dungeoncrawl.logic.items.Health;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.Key;
 import com.codecool.dungeoncrawl.logic.items.Sword;
+import com.codecool.dungeoncrawl.logic.map.MapFactory;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -33,8 +35,14 @@ public abstract class Actor implements Drawable {
         Cell nextCell = cell.getNeighbor(dx, dy);
         if (nextCell.getTileName().equals("wall"))
             return;
-        if (nextCell.getTileName().equals("level") && this.getTileName().equals("player"))
-            Main.map = MapLoader.loadMap(2);
+        if (nextCell.getTileName().equals("level") && this.getTileName().equals("player")){
+            try {
+                MapFactory.createMap(13);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            Main.map = MapLoader.loadMap();
+        }
         if (nextCell.getTileName().equals("doorClosed")){
             for (Item item: items){
                 if (item.getTileName().equals("key"))

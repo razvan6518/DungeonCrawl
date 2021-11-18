@@ -10,20 +10,12 @@ import com.codecool.dungeoncrawl.logic.items.Level;
 import com.codecool.dungeoncrawl.logic.items.Sword;
 import com.codecool.dungeoncrawl.logic.manager.DbManager;
 
-import java.io.InputStream;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.Random;
 
 public class MapLoader {
-    public static GameMap loadMap(int number) {
-//        InputStream is = MapLoader.class.getResourceAsStream("/map" + number + ".txt");
-//        Scanner scanner = new Scanner(is);
-//        int width = scanner.nextInt();
-//        int height = scanner.nextInt();
-//
-//        scanner.nextLine();
 
+    public static GameMap loadMap() {
         int width = 200;
         int height = 200;
 
@@ -33,14 +25,14 @@ public class MapLoader {
 
         GameMap map = new GameMap(width, height, CellType.EMPTY);
         for (int y = 0; y < height; y++) {
-//            String line = scanner.nextLine();
             String line = mapSplitByLine[y];
             for (int x = 0; x < width; x++) {
                 if (x < line.length()) {
                     Cell cell = map.getCell(x, y);
                     switch (line.charAt(x)) {
                         case ' ':
-                            cell.setType(CellType.EMPTY);
+                            int rnd = new Random().nextInt(100);
+                            cell.setType((rnd < 90) ? CellType.EMPTY : (rnd == 90) ? CellType.HOUSE : CellType.TREE);
                             break;
                         case '#':
                             cell.setType(CellType.WALL);
@@ -110,7 +102,7 @@ public class MapLoader {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return dbManager.saves.getSave("salvare");
+        return dbManager.saves.getLastSave();
     }
 
 }

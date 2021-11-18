@@ -11,7 +11,9 @@ public enum CellType {
     CRATE("crate"),
     TRAP("trap"),
     LEVEL("level"),
-    HEALTH("health");
+    HEALTH("health"),
+    TREE("tree"),
+    HOUSE("house");
 
     private final String tileName;
 

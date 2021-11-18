@@ -6,8 +6,11 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -19,7 +22,7 @@ public class MapFactory {
     public static void createMap(int numberOfRooms) throws SQLException {
 
         char[][] map = createEmptyMap();
-        List<Room> rooms = placeRooms(numberOfRooms, map);
+        List<Room> rooms = placeRooms(5, map);
         createFileMap("map1");
         for (Room room: rooms){
             makePath(map, room, rooms.get(new Random().nextInt(rooms.size())));
@@ -33,8 +36,8 @@ public class MapFactory {
         Room randomRoom = rooms.get(new Random().nextInt(rooms.size()));
         map[randomRoom.getY() + randomRoom.getHeight()/2][randomRoom.getX() + randomRoom.getWidth()/2] ='@';
         addWalls(map);
-//        writeToFile(map, 1);
-//        writeInDb(map);
+        writeToFile(map, 1);
+        writeInDb(map);
     }
 
     public static void putActorInRoom(Room room, char[][] map, char actor){
@@ -172,7 +175,8 @@ public class MapFactory {
         String mapForDb = stringBuilder.toString();
         DbManager dbManager = new DbManager();
         dbManager.setup();
-        dbManager.saves.addSave("salvare", mapForDb);
+        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        dbManager.saves.addSave(date, mapForDb);
     }
 
     private static List<Room> placeRooms(int numberOfRooms, char[][] map){
