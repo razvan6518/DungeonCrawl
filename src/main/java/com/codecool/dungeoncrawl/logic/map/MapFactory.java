@@ -14,9 +14,10 @@ public class MapFactory {
     }
 
     public static void createMap(int numberOfRooms) {
+
         char[][] map = createEmptyMap();
         List<Room> rooms = placeRooms(numberOfRooms, map);
-        createFileMap("map2");
+        createFileMap("map1");
         for (Room room: rooms){
             makePath(map, room, rooms.get(new Random().nextInt(rooms.size())));
             putActorInRoom(room, map, 'c');
@@ -29,7 +30,25 @@ public class MapFactory {
         Room randomRoom = rooms.get(new Random().nextInt(rooms.size()));
         map[randomRoom.getY() + randomRoom.getHeight()/2][randomRoom.getX() + randomRoom.getWidth()/2] ='@';
         addWalls(map);
-        writeToFile(map);
+        writeToFile(map, 1);
+
+        map = createEmptyMap();
+        rooms = null;
+        rooms = placeRooms(numberOfRooms, map);
+        createFileMap("map2");
+        for (Room room: rooms){
+            makePath(map, room, rooms.get(new Random().nextInt(rooms.size())));
+            putActorInRoom(room, map, 'c');
+            putActorInRoom(room, map, 'c');
+            putActorInRoom(room, map, 'M');
+            putActorInRoom(room, map, 'M');
+        }
+        //put stairs in a random room
+        putActorInRoom(rooms.get(new Random().nextInt(rooms.size())), map, 'L');
+        randomRoom = rooms.get(new Random().nextInt(rooms.size()));
+        map[randomRoom.getY() + randomRoom.getHeight()/2][randomRoom.getX() + randomRoom.getWidth()/2] ='@';
+        addWalls(map);
+        writeToFile(map, 2);
     }
 
     public static void putActorInRoom(Room room, char[][] map, char actor){
@@ -126,22 +145,22 @@ public class MapFactory {
         return validDirections.get(new Random().nextInt(validDirections.size()));
     }
 
-    private static void writeToFile(char[][] map){
+    private static void writeToFile(char[][] map, int mapNumber){
         try {
-            writeToFileMap("map2", "200 200\n");
-            writeToFileMap("map2", "\n".repeat(10));
+            writeToFileMap("map" + mapNumber, "200 200\n");
+            writeToFileMap("map" + mapNumber, "\n".repeat(10));
         } catch (IOException ignored) {}
         for (int i = 0; i < map.length; i++){
             try {
-                writeToFileMap("map2", " ".repeat(30));
+                writeToFileMap("map" + mapNumber, " ".repeat(30));
             } catch (IOException ignored) {}
             for (int j = 0; j < map[0].length; j++){
                 try {
-                    writeToFileMap("map2", String.valueOf(map[i][j]));
+                    writeToFileMap("map" + mapNumber, String.valueOf(map[i][j]));
                 } catch (IOException ignored) {}
             }
             try {
-                writeToFileMap("map2", String.valueOf('\n'));
+                writeToFileMap("map" + mapNumber, String.valueOf('\n'));
             } catch (IOException ignored) {}
         }
     }

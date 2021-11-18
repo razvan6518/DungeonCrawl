@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
+import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
@@ -33,7 +34,7 @@ public abstract class Actor implements Drawable {
         if (nextCell.getTileName().equals("wall"))
             return;
         if (nextCell.getTileName().equals("level"))
-            return;
+            Main.map = MapLoader.loadMap(2);
         if (nextCell.getTileName().equals("doorClosed")){
             for (Item item: items){
                 if (item.getTileName().equals("key"))

@@ -5,6 +5,7 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.logic.manager.DbManager;
 import com.codecool.dungeoncrawl.logic.map.MapFactory;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -21,6 +22,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -35,10 +38,13 @@ public class Main extends Application {
     Label itemsDisplay = new Label();
     Button button = new Button("Take item");
     GridPane ui = new GridPane();
+    static DbManager dbManager;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         MapFactory.createMap(13);
-        map = MapLoader.loadMap();
+        map = MapLoader.loadMap(1);
+        dbManager = new DbManager();
+        dbManager.setup();
         launch(args);
     }
 
@@ -46,7 +52,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         ui.setPrefWidth(500);
         ui.setPadding(new Insets(10));
-
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
         ui.add(itemsDisplay, 0, 2);
@@ -83,23 +88,24 @@ public class Main extends Application {
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1);
-//                map = MapLoader.loadMap();
                 refresh();
                 break;
             case DOWN:
                 map.getPlayer().move(0, 1);
-//                map = MapLoader.loadMap();
                 refresh();
                 break;
             case LEFT:
                 map.getPlayer().move(-1, 0);
-//                map = MapLoader.loadMap();
                 refresh();
                 break;
             case RIGHT:
                 map.getPlayer().move(1,0);
-//                map = MapLoader.loadMap();
                 refresh();
+                break;
+            case S:
+                if (keyEvent.isControlDown()){
+                    dbManager.saves.addSave("name", "map");
+                }
                 break;
         }
     }
