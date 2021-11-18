@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Main extends Application {
-    static GameMap map;
+    public static GameMap map;
     Canvas canvas = new Canvas(
             50 * Tiles.TILE_WIDTH,
             40 * Tiles.TILE_WIDTH);
@@ -83,18 +83,22 @@ public class Main extends Application {
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1);
+//                map = MapLoader.loadMap();
                 refresh();
                 break;
             case DOWN:
                 map.getPlayer().move(0, 1);
+//                map = MapLoader.loadMap();
                 refresh();
                 break;
             case LEFT:
                 map.getPlayer().move(-1, 0);
+//                map = MapLoader.loadMap();
                 refresh();
                 break;
             case RIGHT:
                 map.getPlayer().move(1,0);
+//                map = MapLoader.loadMap();
                 refresh();
                 break;
         }

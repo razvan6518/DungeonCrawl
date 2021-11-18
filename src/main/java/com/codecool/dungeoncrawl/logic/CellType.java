@@ -10,6 +10,7 @@ public enum CellType {
     FENCE_UP("fenceUp"),
     CRATE("crate"),
     TRAP("trap"),
+    LEVEL("level"),
     HEALTH("health");
 
     private final String tileName;

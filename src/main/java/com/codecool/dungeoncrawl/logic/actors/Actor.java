@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Health;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.Key;
@@ -31,6 +32,8 @@ public abstract class Actor implements Drawable {
         Cell nextCell = cell.getNeighbor(dx, dy);
         if (nextCell.getTileName().equals("wall"))
             return;
+        if (nextCell.getTileName().equals("level"))
+            return;
         if (nextCell.getTileName().equals("doorClosed")){
             for (Item item: items){
                 if (item.getTileName().equals("key"))
@@ -39,17 +42,6 @@ public abstract class Actor implements Drawable {
             }
             return;
         }
-//        if (nextCell.getTileName().equals("crate")){
-//            if (nextCell.getNeighbor(dx, dy).getTileName().equals("trap")){
-//
-//            }
-//            nextCell.getNeighbor(dx, dy).setType(CellType.CRATE);
-//            nextCell.setType(CellType.FLOOR);
-//            cell.setActor(null);
-//            nextCell.setActor(this);
-//            cell = nextCell;
-//            return;
-//        }
 
         if (nextCell.getActor() != null){
             nextCell.getActor().hit(this);
@@ -90,14 +82,14 @@ public abstract class Actor implements Drawable {
     }
 
     private Item generateItem(Cell cell){
-        int choice = new Random().nextInt(3);
-        if (choice == 0){
-            return new Health(cell);
+        int choice = new Random().nextInt(100);
+        if (choice < 50){
+            return new Key(cell);
         }
-        if (choice == 1){
-            return new Health(cell);
+        if (choice > 49 && choice < 60){
+            return new Sword(cell);
         }
-        if (choice == 2){
+        if (choice >= 60){
             return new Health(cell);
         }
         return null;
@@ -105,7 +97,9 @@ public abstract class Actor implements Drawable {
 
 
     public void addItem(Item item){
-        this.items.add(item);
+        if (item.getTileName().equals("key")){
+            this.items.add(item);
+        }
         if (item.getTileName().equals("sword")){
             this.damage += 5;
         }

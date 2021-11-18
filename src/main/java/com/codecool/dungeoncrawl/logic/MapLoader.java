@@ -6,6 +6,7 @@ import com.codecool.dungeoncrawl.logic.actors.Scorpion;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.items.Health;
 import com.codecool.dungeoncrawl.logic.items.Key;
+import com.codecool.dungeoncrawl.logic.items.Level;
 import com.codecool.dungeoncrawl.logic.items.Sword;
 
 import java.io.InputStream;
@@ -78,6 +79,10 @@ public class MapLoader {
                         case 'h':
                             cell.setType(CellType.HEALTH);
                             map.setItem(new Health(cell));
+                            break;
+                        case 'L':
+                            cell.setType(CellType.LEVEL);
+                            map.setItem(new Level(cell));
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");

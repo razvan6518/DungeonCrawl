@@ -24,6 +24,8 @@ public class MapFactory {
             putActorInRoom(room, map, 'M');
             putActorInRoom(room, map, 'M');
         }
+        //put stairs in a random room
+        putActorInRoom(rooms.get(new Random().nextInt(rooms.size())), map, 'L');
         Room randomRoom = rooms.get(new Random().nextInt(rooms.size()));
         map[randomRoom.getY() + randomRoom.getHeight()/2][randomRoom.getX() + randomRoom.getWidth()/2] ='@';
         addWalls(map);
