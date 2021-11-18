@@ -28,12 +28,13 @@ public class MapLoader {
         int height = 200;
 
         String mapFromDb = getMapFromDb();
-
+        String[] mapSplitByLine = mapFromDb.split("\n");
 
 
         GameMap map = new GameMap(width, height, CellType.EMPTY);
         for (int y = 0; y < height; y++) {
-            String line = scanner.nextLine();
+//            String line = scanner.nextLine();
+            String line = mapSplitByLine[y];
             for (int x = 0; x < width; x++) {
                 if (x < line.length()) {
                     Cell cell = map.getCell(x, y);

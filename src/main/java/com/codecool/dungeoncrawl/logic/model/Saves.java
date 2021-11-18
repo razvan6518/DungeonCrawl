@@ -30,10 +30,9 @@ public class Saves {
             String sql = "SELECT * FROM dungeon.saves.saves WHERE name = ?";
             PreparedStatement st = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             st.setString(1, name);
-            st.executeUpdate();
             ResultSet rs = st.executeQuery();
             rs.next();
-            return rs.getString(1);
+            return rs.getString(2);
         } catch (SQLException throwables) {
             throw new RuntimeException("Error while adding new Author.", throwables);
         }
