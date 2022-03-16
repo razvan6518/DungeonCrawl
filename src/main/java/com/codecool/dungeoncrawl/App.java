@@ -1,5 +1,7 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.logic.map.MapFactory;
+
 import java.sql.SQLException;
 
 public class App {

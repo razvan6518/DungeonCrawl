@@ -22,7 +22,7 @@ public class MapFactory {
     public static void createMap(int numberOfRooms) throws SQLException {
 
         char[][] map = createEmptyMap();
-        List<Room> rooms = placeRooms(5, map);
+        List<Room> rooms = placeRooms(numberOfRooms, map);
         createFileMap("map1");
         for (Room room: rooms){
             makePath(map, room, rooms.get(new Random().nextInt(rooms.size())));
@@ -227,20 +227,20 @@ public class MapFactory {
     }
 
     public static void writeToFileMap(String fineName, String toWrite) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter("/home/razvan/Documents/projects/oop/week3/dungeon-crawl-1-java-razvan6518/src/main/resources/" + fineName + ".txt", true));
+        BufferedWriter writer = new BufferedWriter(new FileWriter("/home/razvan/Documents/temp/repo/dungeon-crawl-1-java-razvan6518/src/main/resources/" + fineName + ".txt", true));
         writer.append(toWrite);
         writer.close();
     }
 
     private static void createFileMap(String fineName){
-        File file = new File("/home/razvan/Documents/projects/oop/week3/dungeon-crawl-1-java-razvan6518/src/main/resources/" + fineName + ".txt");
+        File file = new File("/home/razvan/Documents/temp/repo/dungeon-crawl-1-java-razvan6518/src/main/resources/" + fineName + ".txt");
         if (file.delete()) {
             System.out.println("Deleted the file: " + file.getName());
         } else {
             System.out.println("Failed to delete the file.");
         }
         try {
-           File myObj = new File("/home/razvan/Documents/projects/oop/week3/dungeon-crawl-1-java-razvan6518/src/main/resources/" + fineName + ".txt");
+           File myObj = new File("/home/razvan/Documents/temp/repo/dungeon-crawl-1-java-razvan6518/src/main/resources/" + fineName + ".txt");
            if (myObj.createNewFile()) {
                System.out.println("File created: " + myObj.getName());
            } else {

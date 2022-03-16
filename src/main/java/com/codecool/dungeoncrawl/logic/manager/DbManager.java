@@ -16,7 +16,7 @@ public class DbManager {
         ds.setPortNumber(5432);
         ds.setDatabaseName("dungeon");
         ds.setUser("razvan");
-        ds.setPassword("225tKnN4L0G");
+        ds.setPassword("123456");
         return ds;
     }
 
